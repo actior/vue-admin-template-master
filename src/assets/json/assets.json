@@ -1,0 +1,393 @@
+[
+  {
+    "id": "1328223130763833345",
+    "type": 1,
+    "gameType": {
+      "id": 1,
+      "name": "小卖部",
+      "type": 1
+    },
+    "cost": 50000,
+    "cashFlow": 1000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223265623289857",
+    "type": 2,
+    "gameType": {
+      "id": 2,
+      "name": "火锅店",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 4000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223512248365057",
+    "type": 3,
+    "gameType": {
+      "id": 3,
+      "name": "网络服装店",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 50000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 1
+  },
+  {
+    "id": "1328223566426189826",
+    "type": 4,
+    "gameType": {
+      "id": 4,
+      "name": "高档酒店",
+      "type": 1
+    },
+    "cost": 500000,
+    "cashFlow": 30000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223591956918274",
+    "type": 5,
+    "gameType": {
+      "id": 5,
+      "name": "实体服装店",
+      "type": 1
+    },
+    "cost": 10000,
+    "cashFlow": 2000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223615776370690",
+    "type": 6,
+    "gameType": {
+      "id": 6,
+      "name": "商场",
+      "type": 1
+    },
+    "cost": 400000,
+    "cashFlow": 20000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223642305343489",
+    "type": 7,
+    "gameType": {
+      "id": 7,
+      "name": "4S店",
+      "type": 1
+    },
+    "cost": 300000,
+    "cashFlow": 140000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223663482384386",
+    "type": 8,
+    "gameType": {
+      "id": 8,
+      "name": "电影院",
+      "type": 1
+    },
+    "cost": 300000,
+    "cashFlow": 9000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223694235021314",
+    "type": 9,
+    "gameType": {
+      "id": 9,
+      "name": "游乐场",
+      "type": 1
+    },
+    "cost": 300000,
+    "cashFlow": 12000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223712622850049",
+    "type": 10,
+    "gameType": {
+      "id": 10,
+      "name": "电商平台",
+      "type": 1
+    },
+    "cost": 400000,
+    "cashFlow": 12000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223731316862977",
+    "type": 11,
+    "gameType": {
+      "id": 11,
+      "name": "KTV",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 5000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223750916845569",
+    "type": 12,
+    "gameType": {
+      "id": 12,
+      "name": "农场",
+      "type": 1
+    },
+    "cost": 100000,
+    "cashFlow": 2000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223767954108418",
+    "type": 13,
+    "gameType": {
+      "id": 13,
+      "name": "工厂",
+      "type": 1
+    },
+    "cost": 100000,
+    "cashFlow": 2000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223788556529666",
+    "type": 14,
+    "gameType": {
+      "id": 14,
+      "name": "直播公司",
+      "type": 1
+    },
+    "cost": 50000,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 5,
+    "virtual": 0
+  },
+  {
+    "id": "1328223809762930689",
+    "type": 15,
+    "gameType": {
+      "id": 15,
+      "name": "心理咨询室",
+      "type": 1
+    },
+    "cost": 50000,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 3,
+    "virtual": 0
+  },
+  {
+    "id": "1328223830617010177",
+    "type": 16,
+    "gameType": {
+      "id": 16,
+      "name": "婚恋公司",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 15000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 2,
+    "virtual": 0
+  },
+  {
+    "id": "1328223850909052930",
+    "type": 17,
+    "gameType": {
+      "id": 17,
+      "name": "旅行社",
+      "type": 1
+    },
+    "cost": 100000,
+    "cashFlow": 6000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 3,
+    "virtual": 0
+  },
+  {
+    "id": "1328223872023179265",
+    "type": 18,
+    "gameType": {
+      "id": 18,
+      "name": "生态农庄",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 15000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 3,
+    "virtual": 0
+  },
+  {
+    "id": "1328223893556736001",
+    "type": 19,
+    "gameType": {
+      "id": 19,
+      "name": "健康养生中心",
+      "type": 1
+    },
+    "cost": 200000,
+    "cashFlow": 20000,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": 2,
+    "virtual": 0
+  },
+  {
+    "id": "1328223917703344129",
+    "type": 20,
+    "gameType": {
+      "id": 20,
+      "name": "房产",
+      "type": 1
+    },
+    "cost": 150000,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 4,
+    "salePrice": 300000,
+    "max": 1,
+    "virtual": 0
+  },
+  {
+    "id": "1328223917703344130",
+    "type": 21,
+    "gameType": {
+      "id": 21,
+      "name": "黄金",
+      "type": 1
+    },
+    "cost": 0,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": -1,
+    "virtual": 0
+  },
+  {
+    "id": "1328223917703344131",
+    "type": 22,
+    "gameType": {
+      "id": 22,
+      "name": "股票",
+      "type": 1
+    },
+    "cost": 0,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": -1,
+    "virtual": 0
+  },
+  {
+    "id": "1328223917703344132",
+    "type": 23,
+    "gameType": {
+      "id": 23,
+      "name": "保险理财",
+      "type": 1
+    },
+    "cost": 0,
+    "cashFlow": 0,
+    "multiple": 0,
+    "special": 0,
+    "minHoldRound": 0,
+    "salePrice": 0,
+    "max": -1,
+    "virtual": 0
+  }
+]

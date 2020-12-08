@@ -1,0 +1,102 @@
+[
+  {
+    "id": "1",
+    "title": "流浪歌手",
+    "name": "唱歌",
+    "cost": 0,
+    "useCount": 5,
+    "description": "向同格玩家献唱获得2000/人收入",
+    "upgrade": "专辑最多三张",
+    "upgradeDescription": "花费1万，出版自己的一张专辑。获得X万的收益\r\n（X为丢骰子的点数）\r\n"
+  },
+  {
+    "id": "2",
+    "title": "药师\r\n",
+    "name": "采药",
+    "cost": 5000,
+    "useCount": 5,
+    "description": "在雪山草地森林湖泊时可以进行采药获得5000的收益",
+    "upgrade": "专利药物最多三个",
+    "upgradeDescription": "花费2万做药物研究，通过丢骰子\r\n若丢到5，6则研究成功获得专利增加现金流2万\r\n若医生丢到4，5，6则为研究成功获得专利增加现金流2万\r\n"
+  },
+  {
+    "id": "3",
+    "title": "主播\r\n",
+    "name": "直播",
+    "cost": 5000,
+    "useCount": -1,
+    "description": "副业做影视获得2000的现金流",
+    "upgrade": "影视团队最多2个",
+    "upgradeDescription": "花费5万，组建自己的影视公司，获得现金流骰子点数成以1000的现金流"
+  },
+  {
+    "id": "4",
+    "title": "心理咨询师",
+    "name": "抑郁症治疗",
+    "cost": 2000,
+    "useCount": -1,
+    "description": "治疗同格子的抑郁症玩家获得8000的收益，自\r\n身获得抑郁症免疫",
+    "upgrade": "咨询室最多2个",
+    "upgradeDescription": "花费5万成立自己的心理咨询室，获得4000的现金流"
+  },
+  {
+    "id": "5",
+    "title": "红线仙",
+    "name": "牵红线",
+    "cost": 10000,
+    "useCount": 3,
+    "description": "给同格子的1个玩家介绍对象，相亲成功则获得2万的中介费，",
+    "upgrade": "婚恋公司最多两个",
+    "upgradeDescription": "花费20万成立自己的婚恋公司，并获得1.5万的现金流"
+  },
+  {
+    "id": "6",
+    "title": "考古王",
+    "name": "考古",
+    "cost": 5000,
+    "useCount": -1,
+    "description": "在雪山草地森林湖泊时可以进行考古得三个骰子点数成\r\n以100的收益",
+    "upgrade": "可以无限使用",
+    "upgradeDescription": "花费1万，在雪山草地森林湖泊时进行一次大规模考古获得四个\r\n骰子点数乘以100的收益"
+  },
+  {
+    "id": "7",
+    "title": "导游",
+    "name": "导游",
+    "cost": 3000,
+    "useCount": 5,
+    "description": "在雪山草地森林湖泊时在旅游区带团做导游获得8000收益",
+    "upgrade": "最多使用三次",
+    "upgradeDescription": "花费10万成立旅行社，获得6000的现金流"
+  },
+  {
+    "id": "8",
+    "title": "猎王",
+    "name": "狩猎",
+    "cost": 5000,
+    "useCount": 5,
+    "description": "在雪山草地森林湖泊时可以进行狩猎获得8000收益",
+    "upgrade": "生态农庄最多三个",
+    "upgradeDescription": "花费20万经营一家生态农庄，获得1.5万的现金流"
+  },
+  {
+    "id": "9",
+    "title": "作家",
+    "name": "写作",
+    "cost": 3000,
+    "useCount": -1,
+    "description": "定期向杂志投稿获得1000的现金流",
+    "upgrade": "最多2本",
+    "upgradeDescription": "花费10万及四回合行动力（轮空3轮）\r\n出版自己的一本书，获得骰子点数成以1000的现金流"
+  },
+  {
+    "id": "10",
+    "title": "演员",
+    "name": "跑龙套",
+    "cost": 10000,
+    "useCount": -1,
+    "description": "做兼职演员获得500的现金流",
+    "upgrade": "最多2部",
+    "upgradeDescription": "花费35万，拍摄属于自己的电影。获得\r\nXX万的收益（X为两次丢骰子的点数）\r\n收益＞35万则电影版权可以以（收益—35万）*10的价格出售"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "1328991925866528770",
+    "type": 1,
+    "money": 600000,
+    "gameType": {
+      "id": 1,
+      "name": "拆迁户",
+      "type": 4
+    },
+    "cashFlow": 0,
+    "skill": 1,
+    "carExpenses": 2000
+  },
+  {
+    "id": "1328992034197012481",
+    "type": 2,
+    "money": 200000,
+    "gameType": {
+      "id": 2,
+      "name": "个体经营者",
+      "type": 4
+    },
+    "cashFlow": 10000,
+    "skill": 2,
+    "carExpenses": 2000
+  },
+  {
+    "id": "1328992101469454337",
+    "type": 3,
+    "money": 150000,
+    "gameType": {
+      "id": 3,
+      "name": "公务员",
+      "type": 4
+    },
+    "cashFlow": 7000,
+    "skill": 3,
+    "carExpenses": 1000
+  },
+  {
+    "id": "1328992284672458754",
+    "type": 4,
+    "money": 50000,
+    "gameType": {
+      "id": 4,
+      "name": "医生",
+      "type": 4
+    },
+    "cashFlow": 15000,
+    "skill": 3,
+    "carExpenses": 1000
+  },
+  {
+    "id": "1328993322326491137",
+    "type": 5,
+    "money": 5000,
+    "gameType": {
+      "id": 5,
+      "name": "学生",
+      "type": 4
+    },
+    "cashFlow": 2000,
+    "skill": 5,
+    "carExpenses": 0
+  },
+  {
+    "id": "1328993416660582401",
+    "type": 6,
+    "money": 100000,
+    "gameType": {
+      "id": 6,
+      "name": "白领",
+      "type": 4
+    },
+    "cashFlow": 9000,
+    "skill": 3,
+    "carExpenses": 500
+  }
+]

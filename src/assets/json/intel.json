@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1328540579539353602",
+    "type": 1,
+    "gameType": {
+      "id": 1,
+      "name": "专辑",
+      "type": 2
+    },
+    "cost": 10000,
+    "cashFlow": 0,
+    "salePrice": 200000,
+    "formula": null,
+    "max": 3
+  },
+  {
+    "id": "1328540743003963393",
+    "type": 2,
+    "gameType": {
+      "id": 2,
+      "name": "专利药物",
+      "type": 2
+    },
+    "cost": 20000,
+    "cashFlow": 0,
+    "salePrice": 400000,
+    "formula": null,
+    "max": 3
+  },
+  {
+    "id": "1328540872737980417",
+    "type": 3,
+    "gameType": {
+      "id": 3,
+      "name": "著作",
+      "type": 2
+    },
+    "cost": 100000,
+    "cashFlow": 0,
+    "salePrice": 1000000,
+    "formula": null,
+    "max": 2
+  },
+  {
+    "id": "1328541185389789186",
+    "type": 4,
+    "gameType": {
+      "id": 4,
+      "name": "电影",
+      "type": 2
+    },
+    "cost": 300000,
+    "cashFlow": 0,
+    "salePrice": 0,
+    "formula": "(?-300000)*10",
+    "max": 3
+  },
+  {
+    "id": "1328541329271193601",
+    "type": 5,
+    "gameType": {
+      "id": 5,
+      "name": "研发专利",
+      "type": 2
+    },
+    "cost": 2000,
+    "cashFlow": 5000,
+    "salePrice": 100000,
+    "formula": null,
+    "max": 5
+  }
+]
