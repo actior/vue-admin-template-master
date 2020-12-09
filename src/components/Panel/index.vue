@@ -5,15 +5,27 @@
         <div class="grid-box-left">
           <div class="text item">现金：{{ list.money }}</div>
           <div class="text item">现金流：{{ list.cashFlow - list.carExpenses }}</div>
-          <div class="text item">银行股票基金：{{ list.stock || 0 }}</div>
-          <div class="text item">银行贵金属：{{ list.metals || 0 }}</div>
-          <div class="text item">银行保险理财：{{ list.insurance || 0 }}</div>
+          <div class="text items">
+            <div v-for="(item,index) in list.assetsArray" :key="'stock'+index">
+              <div style="padding: 18px 0;" v-if="item.type===22">银行股票基金：{{ item.assetscost }}</div>
+            </div>
+          </div>
+          <div class="text items">
+            <div v-for="(item,index) in list.assetsArray" :key="'metail'+index">
+              <div style="padding: 18px 0;" v-if="item.type===21">银行贵金属：{{ item.assetscost }}</div>
+            </div>
+          </div>
+          <div class="text items">
+            <div v-for="(item,index) in list.assetsArray" :key="'insta'+index">
+              <div style="padding: 18px 0;" v-if="item.type===23">银行保险理财：{{ item.assetscost }}</div>
+            </div>
+          </div>
           <div class="text item">
             <el-popover placement="right" width="400" trigger="click">
               <el-card class="box-card">
                 <div
                   v-for="(item,index) in list.assetsArray"
-                  :key="index"
+                  :key="'al'+index"
                   class="text item"
                 >{{setAssets(item.type)}}&nbsp;{{item.assetsnumber}}份</div>
               </el-card>
@@ -25,7 +37,7 @@
         </div>
         <div class="grid-box-right">
           <div class="text item">职业：{{ setProfessional(list.gameType.id) }}</div>
-          <div class="text item">婚姻：{{ setMarriages(list.marriages) || 0 }}</div>
+          <div class="text item">婚姻：{{ setMarriages(list.marriages) }}</div>
           <div class="text item">子女：{{ list.testsset || 0 }}</div>
           <div class="text item">亚健康：{{ list.health || 0 }}</div>
           <div class="text item">抑郁症：{{ list.depressed || 0 }}</div>
@@ -33,7 +45,7 @@
           <div class="text item">
             <el-image
               style="width: 100px; height: 100px; border-radius: 50%"
-              :src="url"
+              :src="require('@/assets/actor/'+list.image+'.png')"
               :fit="fit"
             />
           </div>
@@ -44,12 +56,13 @@
           </div>
           <div class="text item">玩家编号：{{ id + 1 }}</div>
           <div class="text item">大学研发中心：{{ list.developed || 0 }}</div>
+          <div class="text item">银行信贷信用卡：{{ list.credit || 0 }}</div>
           <div class="text item">
             <el-popover placement="right" width="400" trigger="click">
               <el-card class="box-card">
                 <div
                   v-for="(item,index) in list.inteArray"
-                  :key="index"
+                  :key="'intel'+index"
                   class="text item"
                 >{{setIntel(item.type)}}&nbsp;{{item.intelnumber}}份</div>
               </el-card>
@@ -60,7 +73,7 @@
             技能：
             <div
               v-for="(arr,arrIndex) in list.skillList"
-              :key="arrIndex"
+              :key="'skill'+arrIndex"
             >{{arr.name}}——{{setSkillraid(arr.useCount)}}</div>
           </div>
         </div>
@@ -88,11 +101,6 @@ export default {
       list: this.option
     }
   },
-  // mounted() {
-  //   if (Object.keys(this.list).length === 0) {
-  //     this.list.length = 0;
-  //   }
-  // },
   watch: {
     option: {
       handler(val) {
@@ -108,8 +116,7 @@ export default {
     setMarriages(model) {
       const type = {
         0: '单身',
-        1: '已婚',
-        2: '离婚'
+        1: '已婚'
       }
       return type[model]
     },

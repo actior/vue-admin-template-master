@@ -1,0 +1,79 @@
+[
+  {
+    "id": "1328594673968795650",
+    "type": 1,
+    "gameType": {
+      "id": 1,
+      "name": "保险",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594695129059330",
+    "type": 2,
+    "gameType": {
+      "id": 2,
+      "name": "信用卡",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594706843750401",
+    "type": 3,
+    "gameType": {
+      "id": 3,
+      "name": "孩子",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594723943927810",
+    "type": 4,
+    "gameType": {
+      "id": 4,
+      "name": "配偶",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594741153157121",
+    "type": 5,
+    "gameType": {
+      "id": 5,
+      "name": "车子",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594753106923522",
+    "type": 6,
+    "gameType": {
+      "id": 6,
+      "name": "亚健康",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  },
+  {
+    "id": "1328594783578542082",
+    "type": 7,
+    "gameType": {
+      "id": 7,
+      "name": "抑郁症",
+      "type": 3
+    },
+    "cashFlow": 0,
+    "holdRound": 0
+  }
+]

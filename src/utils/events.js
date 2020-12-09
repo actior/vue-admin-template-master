@@ -80,6 +80,8 @@ function useskill(infoItem, formInline, infoIndex, partmoney) {
       }
       if (usertable.includes(infoIndex + 1)) {
         infoItem.money = infoItem.money - formInline.usemoney + partmoney;
+        infoItem.marriages = 1;
+        infoItem.cashFlow = infoItem.cashFlow + 5000
       } else if (formInline.number - 1 === infoIndex) {
         infoItem.money = infoItem.money;
       } else {
@@ -98,17 +100,23 @@ function useskill(infoItem, formInline, infoIndex, partmoney) {
       });
       infoItem.money = infoItem.money + 8000;
     }
+  } else {
   }
   return infoItem;
 }
 // 抑郁症
 export function depression(formInline, infoItem) {
-  if ([3, 46].includes(Math.abs(formInline.event))) {
-    ++infoItem.depressed;
-  } else {
-    ++infoItem.health;
+  if ([1, 2].includes(formInline.dice)) {
+    if ([3, 46].includes(Math.abs(formInline.event))) {
+      if (infoItem.depressed === 2) {
+        infoItem.money = infoItem.money - 500000;
+      }
+      ++infoItem.depressed;
+    } else {
+      ++infoItem.health;
+    }
+    infoItem.cashFlow = infoItem.cashFlow - 2000;
   }
-  infoItem.cashFlow = infoItem.cashFlow - 2000;
   return infoItem;
 }
 

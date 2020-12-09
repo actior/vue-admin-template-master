@@ -174,6 +174,9 @@
             <el-form-item label="多输入玩家" prop="moreplayer">
               <el-input v-model="formInline.moreplayer" />
             </el-form-item>
+            <el-form-item label="回合效益" prop="benefits">
+              <el-input v-model.number="formInline.benefits" />
+            </el-form-item>
             <el-form-item label="资金使用" prop="usemoney">
               <el-input v-model.number="formInline.usemoney" />
             </el-form-item>
@@ -254,6 +257,7 @@ import eventData from '@/assets/json/event.json'
 import intelData from '@/assets/json/intel.json'
 import assetsData from '@/assets/json/assets.json'
 import roleData from '@/assets/json/roleList.json'
+import expenssData from '@/assets/json/expenss.json'
 import { mapActions } from 'vuex'
 import NP from 'number-precision'
 import _ from 'lodash'
@@ -286,7 +290,8 @@ export default {
         moreplayer: null,
         cashmoney: null,
         usemoney: null,
-        sell: null
+        sell: null,
+        benefits: null
       },
       ofthe: false, // 奇人异事
       IntelList: [], // 知识产权
@@ -363,6 +368,7 @@ export default {
         this.formInline.moreplayer = null
         this.formInline.usemoney = null
         this.formInline.sell = null
+        this.formInline.benefits = null
       },
       deep: true
     },
@@ -373,7 +379,9 @@ export default {
         //   oldval,
         //   (i, k) => JSON.stringify(i) === JSON.stringify(k)
         // )
-        // console.log(difference)
+        // difference.map(item=>{
+        //   if(item)
+        // })
         let arr3 = newval.concat(oldval);
         let result = arr3.filter(function (v) {
           return newval.every(n => JSON.stringify(n) !== JSON.stringify(v)) || oldval.every(n => JSON.stringify(n) !== JSON.stringify(v))
@@ -548,6 +556,9 @@ export default {
           item.creditRound = 0 // 信贷回合数
           item.inteArray = [] // 知识产权列表
           item.movieShow = 0 // 电影收益
+          item.marriages = 0 // 配偶
+          item.testsset = 0 // 子女
+          item.testssetRound = this.roundNum // 生育时间回合
           return item
         })
         window.sessionStorage.setItem('playerInfos', JSON.stringify(this.playerInfos))
@@ -644,7 +655,20 @@ export default {
         } else {
           item.money = item.money + item.cashFlow - item.carExpenses
         }
-        item.metals = NP.times(item.metals, 1.3)
+        if(item.marriages === 1 && this.roundNum - item.testssetRound === 2){
+          item.testsset = item.testsset + 1
+          item.cashFlow = item.cashFlow - 10000
+        }
+        item.assetsArray.forEach((arr) => {
+          if (arr.type == 21) {
+            arr.assetscost = NP.times(arr.assetscost, 1.03)
+          } else if (arr.type == 23) {
+            arr.assetscost = NP.times(arr.assetscost, 1.02)
+          } else if (arr.type == 22) {
+            arr.assetscost = NP.times(arr.assetscost, 1 + this.formInline.benefits / 100)
+          }
+        })
+        // item.metals = NP.times(item.metals, 1.3)
         return item
       })
       window.sessionStorage.setItem('playerInfos', JSON.stringify(this.playerInfos))
@@ -654,6 +678,7 @@ export default {
         additional: null
       }
       this.roundData.push(data)
+      this.formInline.benefits = null
     },
     // 奇人列表获取
     handleOfthe(e) {
@@ -733,24 +758,19 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const data = deepClone(this.playerInfos)
+          const optionEvent = deepClone(this.optionEvent)
           data.map((item, index, arr) => {
-            if (this.formInline.number - 1 === index) {
-              item = gridjs(this.formInline, item, this.roundNum, intelData, skillData,assetsData)
-            }
+            item = gridjs(this.formInline, item, this.roundNum, intelData, skillData, assetsData, index)
           })
           this.playerInfos = data
           window.sessionStorage.setItem('playerInfos', JSON.stringify(this.playerInfos))
-          // this.optionEvent.forEach((item, index) => {
-          //   if (this.formInline.event === item.id) {
-          //     this.wholeData.push(item)
-          //   }
-          // })
-          // console.log(this.wholeData)
-          this.optionEvent.map(item => {
-            if (item.id === this.formInline.event) {
+          optionEvent.forEach((item, index) => {
+            if (this.formInline.event === item.id) {
+              this.wholeData.push(item)
               this.cashHistory.type = item.typeId
             }
           })
+          // console.log(this.wholeData)
           this.cashHistory.operationType = 1
           this.cashHistory.round = this.roundNum
           const storagePlayerData = JSON.parse(sessionStorage.getItem('playerData'))

@@ -10,7 +10,8 @@
     },
     "cashFlow": 0,
     "skill": 1,
-    "carExpenses": 2000
+    "carExpenses": 2000,
+    "image": "rich"
   },
   {
     "id": "1328992034197012481",
@@ -23,7 +24,8 @@
     },
     "cashFlow": 10000,
     "skill": 2,
-    "carExpenses": 2000
+    "carExpenses": 2000,
+    "image": "operator"
   },
   {
     "id": "1328992101469454337",
@@ -36,7 +38,8 @@
     },
     "cashFlow": 7000,
     "skill": 3,
-    "carExpenses": 1000
+    "carExpenses": 1000,
+    "image": "white"
   },
   {
     "id": "1328992284672458754",
@@ -49,7 +52,8 @@
     },
     "cashFlow": 15000,
     "skill": 3,
-    "carExpenses": 1000
+    "carExpenses": 1000,
+    "image": "doctor"
   },
   {
     "id": "1328993322326491137",
@@ -62,7 +66,8 @@
     },
     "cashFlow": 2000,
     "skill": 5,
-    "carExpenses": 0
+    "carExpenses": 0,
+    "image": "student"
   },
   {
     "id": "1328993416660582401",
@@ -75,6 +80,7 @@
     },
     "cashFlow": 9000,
     "skill": 3,
-    "carExpenses": 500
+    "carExpenses": 500,
+    "image": "civil"
   }
 ]

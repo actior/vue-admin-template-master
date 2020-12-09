@@ -20,24 +20,21 @@ function sellAssets(playerItem, formInline, roundNum, sellround) {
             if (formInline.assets == 21) {
               playerItem.money =
                 playerItem.money +
-                assType.cost *
+                assType.assetscost *
                   formInline.assetsNum *
                   Math.pow(1.03, roundNum - assType.assetsround);
-              playerItem.metals = 0;
-              playerItem.metalsRound = 0;
             } else if (formInline.assets == 23) {
               playerItem.money =
                 playerItem.money +
-                assType.cost *
+                assType.assetscost *
                   formInline.assetsNum *
                   Math.pow(1.02, roundNum - assType.assetsround);
-              playerItem.insurance = 0;
-              playerItem.insuranceRound = 0;
             } else if (formInline.assets == 22) {
-              playerItem.stock = 0;
-              playerItem.stockRound = 0;
               playerItem.money =
-                playerItem.money + assType.cost * formInline.assetsNum;
+                playerItem.money + assType.assetscost * formInline.assetsNum;
+            } else if (formInline.assets == 20) {
+              playerItem.money =
+                playerItem.money + assType.salePrice * formInline.assetsNum;
             } else {
               playerItem.money =
                 playerItem.money + assType.cost * formInline.assetsNum;
