@@ -52,6 +52,7 @@
         </div>
         <div>
           <div class="text item">
+            <el-button size="small" type="success" @click="handleSettlement">结算当前用户</el-button>
             <el-button size="small" type="info" @click="handleDel">删除当前用户</el-button>
           </div>
           <div class="text item">玩家编号：{{ id + 1 }}</div>
@@ -110,6 +111,9 @@ export default {
     }
   },
   methods: {
+    handleSettlement() {
+      this.$emit('handleSettlement', this.id)
+    },
     handleDel() {
       this.$emit('handleDel', this.id)
     },
@@ -207,7 +211,7 @@ export default {
 }
 .grid-box {
   display: grid;
-  grid-template-columns: 50% 30% 20%;
+  grid-template-columns: 40% 30% 30%;
   /* grid-template-rows: 70% 30%; */
 }
 .grid-box-right {

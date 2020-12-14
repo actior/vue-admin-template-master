@@ -55,10 +55,7 @@ function sellAssets(playerItem, formInline, roundNum, sellround) {
   } else if (formInline.intel) {
     Object.keys(playerItem.inteArray).forEach(key => {
       const intelType = playerItem.inteArray;
-      // console.log('intelType: ', intelType);
       if (intelType[key].intelround == sellround) {
-        // console.log('sellround: ', sellround);
-        // console.log("key: ", key);
         if (formInline.intel == intelType[key].type) {
           // playerItem.inteArray.pop()
           playerItem.money =

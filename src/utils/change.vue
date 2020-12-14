@@ -617,13 +617,19 @@ export default {
     },
     // 删除当前玩家
     handleNowDel(val) {
+      console.log(val)
       this.playerInfos.splice(val, 1)
     },
     // 结算当前用户现金
     handleSettlement(val) {
+      let benefits = 0
+      if (typeof (val) === 'string') {
+        benefits = Math.abs(val)
+      } else {
+        benefits = 0
+      }
       this.playerInfos.map((item, index) => {
         if (index === val) {
-          console.log(item)
           if (item.creditRound !== 0) {
             --item.creditRound
             item.money = item.money + item.cashFlow - item.carExpenses - item.credit / 10
@@ -641,7 +647,7 @@ export default {
             }
           }
           if (item.housingId) {
-            if (item.housingId === 10 && this.roundNum - item.housingRound === 2) {
+            if (item.housingId === 10 && this.roundNum - item.housingRound === 1) {
               item.assetsdiscount = 1
               item.housingId = -1
             }
@@ -654,6 +660,7 @@ export default {
           })
           if (item.plaguerelease) {
             if (item.plaguerelease === 9) {
+              item.cashFlow = item.cashFlow - plaguereleaseSum
               item.plaguerelease = -1
             } else if (item.plaguerelease === -1 && this.roundNum - item.plaguereleaseRound === 2) {
               item.cashFlow = item.cashFlow + plaguereleaseSum
