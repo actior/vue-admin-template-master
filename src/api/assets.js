@@ -1,12 +1,16 @@
 import request from '@/utils/request'
+// import axios from 'axios'
 
 // 资产列表-列表
 export function assetsList(data) {
-  return request({
-    url: '/api-game/szrd/assets/list',
-    method: 'post',
-    data
+  return new Promise((resolve, reject) => {
+    return request({
+      url: '/api-game/szrd/assets/list',
+      method: 'post',
+      data
+    })
   })
+
 }
 // 资产管理-删除
 export function delAssetsList(data) {
@@ -42,6 +46,7 @@ export function buyAssetsList(data) {
   })
 }
 
+
 // 资产管理-出售资产
 export function saleAssetsList(data) {
   return request({
@@ -51,3 +56,31 @@ export function saleAssetsList(data) {
   })
 }
 
+// 资产管理-批量购买资产
+export function batchBuyAssetsList(data) {
+  return request({
+    url: '/api-game/szrd/assets/batch_buy',
+    method: 'post',
+    data
+  })
+}
+
+// export function batchBuyAssetsList(data) {
+//   let url = '/api-game/szrd/assets/batch_buy'
+//   return new Promise((resolve, reject) => {
+//     axios.post(url, data).then(res => {
+//       resolve(res)
+//     }).catch(err => {
+//       reject(err)
+//     })
+//   })
+// }
+
+// 资产管理-批量出售资产
+export function batchSaleAssetsList(data) {
+  return request({
+    url: '/api-game/szrd/assets/batch_sale',
+    method: 'post',
+    data
+  })
+}

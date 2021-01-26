@@ -1,26 +1,21 @@
-const storage = sessionStorage;
-
 const state = {
-  playerList: [],
-  roundNumber: storage.getItem("roundNumber")
-    ? storage.getItem("roundNumber")
-    : 1
+  playerInfos: JSON.parse(sessionStorage.getItem('playerInfos')) ? JSON.parse(sessionStorage.getItem('playerInfos')) : []
 };
+
 const mutations = {
-  ADD_PLATER_LIST: (state, info) => {
-    state.playerList.push(info);
-  },
-  SET_ROUNDNUMBER: state => {
-    state.roundNumber++;
+  SET_PLAYERINFOS: (state, playerInfos) => {
+    state.playerInfos = playerInfos ? JSON.parse(sessionStorage.getItem('playerInfos')) : playerInfos
   }
 };
-
 const actions = {
-  addPlayerList({ commit }, info) {
-    commit("ADD_PLATER_LIST", info);
-  },
-  addRound({ commit }) {
-    commit("SET_ROUNDNUMBER");
+  generateRoutes({
+    commit
+  }, playerInfos) {
+    return new Promise(resolve => {
+      commit("SET_PLAYERINFOS", playerInfos)
+      sessionStorage.setItem('playerInfos', JSON.stringify(playerInfos))
+      resolve(playerInfos)
+    })
   }
 };
 

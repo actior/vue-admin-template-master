@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" v-if="refresh">
       <div class="grid-box">
         <div class="grid-box-left">
           <div class="text item">现金：{{ list.money }}</div>
           <div class="text item">现金流：{{ list.cashFlow - list.carExpenses }}</div>
-          <div class="text items">
+          <!-- <div class="text items">
             <div v-for="(item,index) in list.assetsArray" :key="'stock'+index">
               <div style="padding: 18px 0;" v-if="item.type===22">银行股票基金：{{ item.assetscost }}</div>
             </div>
@@ -19,7 +19,7 @@
             <div v-for="(item,index) in list.assetsArray" :key="'insta'+index">
               <div style="padding: 18px 0;" v-if="item.type===23">银行保险理财：{{ item.assetscost }}</div>
             </div>
-          </div>
+          </div>-->
           <div class="text item">
             <el-popover placement="right" width="400" trigger="click">
               <el-card class="box-card">
@@ -27,13 +27,14 @@
                   v-for="(item,index) in list.assetsArray"
                   :key="'al'+index"
                   class="text item"
-                >{{setAssets(item.type)}}&nbsp;{{item.assetsnumber}}份</div>
+                >{{setAssets(item.type)}}&nbsp;{{item.assetsnumber}}份 —— {{item.assetscost || item.cost}} 元</div>
               </el-card>
               <el-button type="text" slot="reference">商业资产</el-button>
             </el-popover>
           </div>
           <div class="text item">技能数：{{ list.skill || 0 }}</div>
-          <div class="text item">负债：{{ list.carExpenses || 0 }}</div>
+          <div class="text item">负债：-{{ list.carExpenses || 0 }}</div>
+          <div class="text item">欠债：{{ list.borrower || 0 }}</div>
         </div>
         <div class="grid-box-right">
           <div class="text item">职业：{{ setProfessional(list.gameType.id) }}</div>
@@ -41,7 +42,7 @@
           <div class="text item">子女：{{ list.testsset || 0 }}</div>
           <div class="text item">亚健康：{{ list.health || 0 }}</div>
           <div class="text item">抑郁症：{{ list.depressed || 0 }}</div>
-          <div class="text item">保险：{{ list.carinsurance || 0 }}</div>
+          <div class="text item">保险：{{ list.bankihttp || 0 }}</div>
           <div class="text item">
             <el-image
               style="width: 100px; height: 100px; border-radius: 50%"
@@ -52,12 +53,25 @@
         </div>
         <div>
           <div class="text item">
-            <el-button size="small" type="success" @click="handleSettlement">结算当前用户</el-button>
-            <el-button size="small" type="info" @click="handleDel">删除当前用户</el-button>
+            <el-button
+              size="small"
+              :type="list.disabled?'info':'success'"
+              @click="handleSettlement"
+              class="styleSettle"
+              :disabled="list.disabled"
+            >结算当前用户</el-button>
+            <el-dropdown placement="bottom-start">
+              <span class="el-dropdown-link">
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="handleDel">删除当前用户</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
           <div class="text item">玩家编号：{{ id + 1 }}</div>
           <div class="text item">大学研发中心：{{ list.developed || 0 }}</div>
-          <div class="text item">银行信贷信用卡：{{ list.credit || 0 }}</div>
+          <div class="text item">银行信贷信用卡：{{ list.credit*(list.creditRound/10) || 0 }}</div>
           <div class="text item">
             <el-popover placement="right" width="400" trigger="click">
               <el-card class="box-card">
@@ -80,10 +94,17 @@
         </div>
       </div>
     </el-card>
+    <el-dialog title="现金流结算界面" :visible.sync="dialogTableVisible" :modal="false">
+      <el-table :data="gridData">
+        <el-table-column property="name" label="名称"></el-table-column>
+        <el-table-column property="cashFlow" label="现金流"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { deepClone, debounce } from '@/utils'
 export default {
   props: {
     option: {
@@ -93,27 +114,87 @@ export default {
     id: {
       type: Number,
       default: 0
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       fit: 'cover',
       url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      list: this.option
+      list: this.option,
+      dialogTableVisible: false,
+      gridData: [],
+      type: '1',
+      refresh: true
     }
   },
   watch: {
     option: {
       handler(val) {
-        this.list = val
+        // 移除组件
+        this.refresh = false
+        // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+        this.$nextTick(() => {
+          // 重新渲染组件
+          this.list = val
+          this.refresh = true
+        })
       },
       deep: true
     }
   },
   methods: {
-    handleSettlement() {
-      this.$emit('handleSettlement', this.id)
+    getDialog() {
+      const selteList = deepClone(this.list)
+      this.gridData = []
+      if (selteList.assetsArray) {
+        selteList.assetsArray.map((item, index) => {
+          console.log(item.cashFlow)
+          if (item.houseType) {
+            if ([1, 2, 3].includes(item.houseType)) {
+              item.name = item.gameType.name + '—' + 'C类'
+              item.cashFlow = -5000
+            } else if ([4, 5].includes(item.houseType)) {
+              item.name = item.gameType.name + '—' + 'B类'
+              item.cashFlow = -3000
+            } else {
+              item.name = item.gameType.name + '—' + 'A类'
+              item.cashFlow = 0
+            }
+          } else {
+            item.name = item.gameType.name
+            item.cashFlow = item.cashFlow
+            console.log('item.cashFlow: ', item.cashFlow);
+          }
+          this.gridData.push(item)
+        })
+      }
+      if (selteList.inteArray) {
+        selteList.inteArray.map((item, index) => {
+          item.name = item.gameType.name
+          item.cashFlow = item.cashFlow
+          this.gridData.push(item)
+        })
+      }
+      const car = {
+        name: '其他支出',
+        cashFlow: '-' + selteList.carExpenses
+      }
+      this.gridData = this.gridData.concat(car)
+      console.log('this.gridData: ', this.gridData);
     },
+    // 当前结算用户数据
+    handleSettlement: debounce(function () {
+      this.dialogTableVisible = true
+      // this.disabled
+      console.log('this.disabled: ', this.disabled);
+      this.getDialog()
+      this.$emit('handleSettlement', this.id)
+    }, 500)
+    ,
     handleDel() {
       this.$emit('handleDel', this.id)
     },
@@ -146,6 +227,7 @@ export default {
     setSkillraid(model) {
       const type = {
         '-1': '无',
+        '0': 0,
         '1': 1,
         '2': 2,
         '3': 3,
@@ -197,6 +279,13 @@ export default {
 </script>
 
 <style>
+.styleSettle {
+  margin-right: 15px;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
 .text {
   font-size: 14px;
 }
