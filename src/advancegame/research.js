@@ -73,5 +73,15 @@ export function research(
         }
       }
     }
+  } else {
+    console.log('0')
+    if (playerItem.type === 3) {
+      console.log('1')
+      // 公务员被动加现金流
+      if ([1, 3, 5].includes(playerformLine.dice)) {
+        console.log('2')
+        playerItem.cashFlow = playerItem.cashFlow + 500
+      }
+    }
   }
 }

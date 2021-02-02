@@ -239,3 +239,9 @@ export function ttassets(
   }
   return playerItem
 }
+
+export function ruleAssets(playerformLine) {
+  if(playerformLine.event === 1){
+    return 1
+  }
+}

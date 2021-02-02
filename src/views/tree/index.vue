@@ -153,6 +153,7 @@
               </el-select>
               <el-button
                 type="primary"
+                :disabled="iSaddskill"
                 style="margin-left:20px;"
                 @click="hanaleAddSkill('ruleForm')"
               >添加</el-button>
@@ -231,14 +232,14 @@
             <el-form-item label="多输入玩家" prop="moreplayer">
               <el-select v-model="formInline.moreplayer" multiple collapse-tags placeholder="请选择">
                 <el-option
-                  v-for="item in playerInfos"
-                  :key="item.playerId"
+                  v-for="(item,index) in playerInfos"
+                  :key="index"
                   :label="item.playerId"
                   :value="item.playerId"
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="买卖数量" prop="assetsNum">
+            <el-form-item label="数量" prop="assetsNum">
               <el-input-number v-model="formInline.assetsNum" :min="1" :max="99" label="描述文字" />
             </el-form-item>
             <el-form-item label="资产选项" prop="assets">
@@ -259,17 +260,11 @@
               <el-button
                 type="primary"
                 style="margin-left:20px;"
+                v-show="assetsButton.includes(formInline.event)"
                 @click="handleBuyAssets('ruleForm')"
               >购买</el-button>
-              <!-- <el-button
-                v-show="[6, 14, 20, 37, 47, 52, 61, 68].includes(formInline.event)"
-                type="primary"
-                style="margin-left:20px;"
-                @click="onSubmit('ruleForm')"
-              >资产进阶</el-button>-->
             </el-form-item>
             <el-form-item label="资产出售" prop="sell">
-              <!-- <el-input v-model="formInline.sell" /> -->
               <el-select
                 v-model="formInline.sell"
                 clearable
@@ -289,6 +284,7 @@
               </el-select>
               <el-button
                 type="primary"
+                v-show="[8, 11, 23, 33, 45, 50, 56].includes(formInline.event)"
                 style="margin-left:20px;"
                 @click.stop="handleSell('ruleForm')"
               >出售</el-button>
@@ -311,47 +307,22 @@
               <el-button
                 type="primary"
                 style="margin-left:20px;"
+                :disabled="disablesSkill"
                 @click="handleUseRefuses('ruleForm')"
               >使用</el-button>
               <el-button
                 v-show="[6, 14, 20, 37, 47, 52, 61, 68].includes(formInline.event)"
                 type="primary"
                 style="margin-left:20px;"
+                :disabled="disablesSkill"
                 @click="handleUpdateSkill('ruleForm')"
               >技能进阶</el-button>
             </el-form-item>
             <el-form-item label="现金流动" prop="cashmoney" class="cashmoney">
-              <el-input v-model.number="formInline.cashmoney" placeholder="请请输入现金" />
+              <el-input v-model.number="formInline.cashmoney" placeholder="请输入现金" />
               <el-button type="info" circle @click="handleToolmoney(1)">减少</el-button>
               <el-button type="primary" circle @click="handleToolmoney(2)">增加</el-button>
             </el-form-item>
-            <!-- <el-form-item label="知识产权" prop="intel">
-              <el-select
-                v-model="formInline.intel"
-                clearable
-                filterables
-                placeholder="请选择知识产权"
-                @visible-change="handleIntel"
-              >
-                <el-option
-                  v-for="(item, index) in IntelList"
-                  :key="index"
-                  :label="item.gameType.name"
-                  :value="item.type"
-                />
-              </el-select>
-              <el-button
-                type="primary"
-                style="margin-left:20px;"
-                @click="handleAddIntel('ruleForm')"
-              >添加</el-button>
-              <el-button
-                v-show="[6, 14, 20, 37, 47, 52, 61, 68].includes(formInline.event)"
-                type="primary"
-                style="margin-left:20px;"
-                @click="onSubmit('ruleForm')"
-              >产权进阶</el-button>
-            </el-form-item>-->
             <el-form-item style="place-items: center" class="menufocus-items">
               <el-button type="success" @click="handleWholeRound">保存一整回合</el-button>
             </el-form-item>
@@ -401,13 +372,13 @@ import { addGameInfo } from '@/api/gameInfo'
 import { gridjs } from '@/advancegame/gridgain' // 格子事件
 import { imageCredits } from '@/advancegame/credited' // 信贷信用卡
 import { eventCounter } from '@/advancegame/events' // 事件执行
-import { useskill } from '@/advancegame/causes' // 技能使用
+import { useskill, skillEvent } from '@/advancegame/causes' // 技能使用
 import { sell } from '@/advancegame/sell' // 资产卖出
 import { compensation } from '@/advancegame/compensation'
 import { sellreduce } from '@/advancegame/sumCashFlows' // 直接现金增加
 import { skillMoney } from '@/advancegame/userefuses' // 技能添加
-import { updateskill } from '@/advancegame/updateSkill' // 技能升阶
-import { ttassets } from '@/advancegame/ttassets' // 购买资产
+import { updateskill, skillRule } from '@/advancegame/updateSkill' // 技能升阶
+import { ttassets, ruleAssets } from '@/advancegame/ttassets' // 购买资产
 import { research } from '@/advancegame/research' // 大学研究中心
 import { round } from '@/advancegame/round'
 import { settlement } from '@/advancegame/settlement'
@@ -431,6 +402,7 @@ export default {
   },
   data() {
     return {
+      iSaddskill: false,
       compensation: false, // 赔偿事件的显示
       compensationRun: 0, //赔偿回合
       drawer: false,
@@ -444,6 +416,7 @@ export default {
       oldSearchJobType: [],
       optionEvent: falseData,
       thereofOptions: [10, 15, 20, 25],
+      assetsButton: [1, 69, 4, 12, 18, 21, 25, 29, 34, 41, 42, 49, 53, 55, 59, 60, 65, 7, 32, 67, 9, 17, 35, 43, 54],
       formInline: {
         event: null,
         affair: null,
@@ -504,8 +477,8 @@ export default {
       userd: 0, // 最有钱的人
       poorindex: 0, // 最穷的下标
       disabled: false,
+      disablesSkill: true,
       dialogVisible: false,
-      iSprompt: false, // 提示判断
       initData: {
         affair: null,
         noble: null,
@@ -522,6 +495,7 @@ export default {
         dices: null,
         thereof: []
       },
+      oldPlayerId: null,
       newPlayerId: null
     }
   },
@@ -534,16 +508,37 @@ export default {
     },
     classObject() {
       return [2, 15, 26, 40].includes(this.formInline.event) ? 'inputclass' : ''
+    },
+    refusess() {
+      return this.formInline.refuses
     }
   },
   watch: {
+    refusess: {
+      handler: function (newval, oldval) {
+        console.log(this.newPlayerId)
+        console.log(this.oldPlayerId)
+        this.playerInfos.map((item, index) => {
+          if (Math.abs(this.newPlayerId) - 1 === index) {
+            console.log(item.skillList)
+            const flag = item.skillList.map(v => v.id).includes(newval)
+            this.disablesSkill = flag ? false : true
+          }
+        })
+      },
+      deep: true
+    },
     numbers: {
       handler: function (newval, oldval) {
-        this.newPlayerId = oldval
+        this.oldPlayerId = oldval
+        this.newPlayerId = newval
+        this.disablesSkill = true
+        this.formInline.refuses = null
         this.playerInfos.map((item, index) => {
           this.cashHistory.playerId = item.playerId
           this.cashHistory.gameId = item.gameId
           if (Math.abs(newval) - 1 === index) {
+            this.iSaddskill = item.skill === item.skillList.length ? true : false
             if (item.borrowerRound) {
               if (NP.minus(this.roundNum, item.borrowerRound) < 5) {
                 this.compensation = true
@@ -576,6 +571,13 @@ export default {
         this.formInline.sell = []
         this.formInline.thereof = null
         this.compensation = false
+        this.optionEvent.map((item, index) => {
+          if (Math.abs(oldval) === Math.abs(item.id)) {
+            this.wholeData.push(item)
+            this.cashHistory.type = item.typeId
+            this.cashHistory.assetsFind = item.name
+          }
+        })
       },
       deep: true
     },
@@ -584,12 +586,12 @@ export default {
         let newNumber = 0
         let oldNumber = 0
         newval.map(item => {
-          if (Math.abs(this.newPlayerId) === Math.abs(item.playerId)) {
+          if (Math.abs(this.oldPlayerId) === Math.abs(item.playerId)) {
             newNumber = item.money
           }
         })
         oldval.map(item => {
-          if (this.newPlayerId === item.playerId) {
+          if (this.oldPlayerId === item.playerId) {
             oldNumber = item.money
           }
         })
@@ -597,27 +599,6 @@ export default {
         this.cashHistory.cash = Math.abs(NP.minus(newNumber, oldNumber))
         this.cashHistory.realCost = Math.abs(NP.minus(newNumber, oldNumber))
         this.cashHistory.salePrice = Math.abs(NP.minus(newNumber, oldNumber))
-        // this.iSprompt = _.isEqual(newval, oldval)
-        // const arrrr = _.differenceWith(newval, oldval, _.isEqual)
-        // console.log('arrrr: ', arrrr);
-        // const arr3 = newval.concat(oldval);
-        // const result = arr3.filter(function (v) {
-        //   return newval.every(n => JSON.stringify(n) !== JSON.stringify(v)) || oldval.every(n => JSON.stringify(n) !== JSON.stringify(v))
-        // })
-        // const temp = {}
-        // for (const i in result) {
-        //   const key = result[i].playerId
-        //   if (temp[key]) {
-        //     temp[key].money = result[i].money - temp[key].money
-        //     this.cashHistory.cash = Math.abs(temp[key].money)
-        //     this.cashHistory.realCost = Math.abs(temp[key].money)
-        //     this.cashHistory.salePrice = Math.abs(temp[key].money)
-        //   } else {
-        //     temp[key] = {};
-        //     temp[key].money = result[i].money;
-        //     this.cashHistory.money = result[i].money
-        //   }
-        // }
       },
       deep: true
     }
@@ -894,7 +875,6 @@ export default {
     handleSettlement(val) {
       this.playerInfos.map((item, index) => {
         if (index === val) {
-          // item.disabled = true
           this.cashHistory.round = Math.abs(this.roundNum)
           this.cashHistory.playerId = item.playerId
           this.cashHistory.gameId = item.gameId
@@ -913,35 +893,6 @@ export default {
           //   }
           // })
           item = settlement(item, this.roundNum)
-          // if (item.creditRound !== 0) {
-          //   --item.creditRound
-          //   item.money = item.money + item.cashFlow - item.carExpenses - item.credit / 10
-          // } else {
-          //   if (this.roundNum === 1) {
-          //     item.money = item.money + item.cashFlow
-          //   } else {
-          //     item.money = item.money + item.cashFlow - item.carExpenses
-          //   }
-          // }
-          // if (item.marriages === 1 && this.roundNum - item.testssetRound === 2) {
-          //   // 生育孩子时间2回合
-          //   item.marriages = 2 // 标识已经生过小孩了
-          //   item.testsset = item.eventTestsset ? item.eventTestsset + item.testsset : item.testsset + 1
-          //   item.cashFlow = item.eventTestsset ? item.cashFlow - NP.times(10000, item.eventTestsset) : item.cashFlow - 10000 // 当事件发生双胞胎减掉双倍现金流
-          // }
-          // if (item.economyId) {
-          //   if (item.economyId === 8 && this.roundNum - item.economyRound === 3) {
-          //     item.cashFlow = item.cashFlow + item.reduceshFlow
-          //     item.assetsdiscount = 1
-          //     item.economyId = -1
-          //   }
-          // }
-          // if (item.housingId) {
-          //   if (item.housingId === 10 && this.roundNum - item.housingRound === 2) {
-          //     item.assetsdiscount = 1
-          //     item.housingId = -1
-          //   }
-          // }
         }
         return item
       })
@@ -987,42 +938,6 @@ export default {
       this.roundNum = ++this.roundNum
       this.playerInfos.map((item, index) => {
         item = round(item, this.roundNum, benefits)
-        // item.disabled = false
-        // if (item.borrowerNum) {
-        //   --item.borrowerNum
-        // }
-        // item.assetsArray.forEach((arr) => {
-        //   if (arr.type === 21) {
-        //     arr.assetscost = NP.times(arr.assetscost, 1.03)
-        //   } else if (arr.type === 23) {
-        //     arr.assetscost = NP.times(arr.assetscost, 1.02)
-        //   } else if (arr.type === 22) {
-        //     arr.assetscost = NP.times(arr.assetscost, 1 + benefits / 100)
-        //   } else if (arr.type === 20) {
-        //     if (NP.minus(this.roundNum, arr.assetsround) > 10) {
-        //       if ([1, 2, 3].includes(arr.houseType)) {
-        //         item.cashFlow = NP.plus(item.cashFlow, 5000)
-        //       } else if ([4, 5].includes(arr.houseType)) {
-        //         item.cashFlow = NP.plus(item.cashFlow, 3000)
-        //       }
-        //     }
-        //   }
-        // })
-        // if (item.plaguereleaseRound) {
-        //   if (NP.minus(this.roundNum, item.plaguereleaseRound) === 2) {
-        //     item.cashFlow = NP.plus(item.cashFlow, item.plaguereleaseSum ? item.plaguereleaseSum : 0)
-        //   }
-        // }
-        // if (item.olympicsrun) {
-        //   if (NP.minus(this.roundNum, item.olympicsrun) === 6) {
-        //     item.cashFlow = NP.minus(item.cashFlow, item.olympicsNum)
-        //   }
-        // }
-        // if (item.industrialRun) {
-        //   if (NP.minus(this.roundNum, item.industrialRun) === 4) {
-        //     item.cashFlow = NP.plus(item.cashFlow, item.industrialMon ? item.industrialMon : 0)
-        //   }
-        // }
         return item
       })
       this.reload()
@@ -1068,36 +983,11 @@ export default {
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.optionEvent.map((item, index) => {
-            if (this.formInline.event === item.id) {
-              this.wholeData.push(item)
-            }
-          })
           eventData.map((item, index) => {
             if (this.formInline.affair === item.id) {
               this.additionalData.push(item)
             }
           })
-          // this.playerInfos.map((item, index, arr) => {
-          //   if (Math.abs(this.formInline.refuses) === 5) {
-          //     if (index !== Math.abs(this.formInline.number) - 1 && index !== Math.abs(this.formInline.moreplayer) - 1) {
-          //       this.partmoney += NP.times(item.money, 0.1)
-          //     }
-          //   } else if (Math.abs(this.formInline.refuses) === 11) {
-          //     let playerArr = this.formInline.moreplayer ? JSON.parse(JSON.stringify(this.formInline.moreplayer.split('')).replace(/"/g, '')) : ''
-          //     if (playerArr.includes(index + 1)) {
-          //       this.sumCashFolw += item.cashFlow
-          //     } else if (index !== Math.abs(this.formInline.number) - 1 && !this.formInline.moreplayer) {
-          //       this.sumCashFolw += item.cashFlow
-          //     }
-          //   } else if ([13, 14].includes(Math.abs(this.formInline.refuses))) {
-          //     let playerArr = this.formInline.moreplayer ? JSON.parse(JSON.stringify(this.formInline.moreplayer.split('')).replace(/"/g, '')) : ''
-          //     if (playerArr.includes(index + 1)) {
-          //       this.userd = NP.times(item.money, 0.5)
-          //     }
-          //   }
-          // })
-          // this.poorindex = this.playerInfos.map(els => els.money).indexOf((Math.min.apply(Math, this.playerInfos.map((ele, index) => { return ele.money }))))
           this.playerInfos.forEach((item, index) => {
             item = eventCounter(this.formInline, item, this.roundNum, index, roleData, assetsData)
             return item
@@ -1127,27 +1017,15 @@ export default {
         if (valid) {
           const data = deepClone(this.playerInfos)
           data.forEach((item, index, arr) => {
-            if (this.formInline.number - 1 === index) {
-              item = research(this.formInline, item, intelData, this.roundNum, index)
-            }
+            item = research(this.formInline, item, intelData, this.roundNum, index)
             return item
           })
           this.playerInfos = data
           sessionData('set', 'playerInfos', this.playerInfos)
-          console.log(this.iSprompt)
-          if (!this.iSprompt) {
-            this.optionEvent.map((item, index) => {
-              if (this.formInline.event === item.id) {
-                this.wholeData.push(item)
-                this.cashHistory.type = item.typeId
-                this.cashHistory.assetsFind = item.name
-              }
-            })
-            this.cashHistory.operationType = 1
-            this.cashHistory.round = Math.abs(this.roundNum)
-            this.dialogVisible = true
-            console.log('this.cashHistory: ', this.cashHistory);
-          }
+          this.cashHistory.operationType = 1
+          this.cashHistory.round = Math.abs(this.roundNum)
+          this.dialogVisible = true
+          console.log('this.cashHistory: ', this.cashHistory);
           // addPlayerCash(this.cashHistory).then((res) => {
           //   console.log('现金购买变动: ', this.cashHistory);
           //   if (res.code === 1000) {
@@ -1177,20 +1055,10 @@ export default {
           })
           this.playerInfos = data
           sessionData('set', 'playerInfos', this.playerInfos)
-          console.log(this.iSprompt)
-          if (!this.iSprompt) {
-            this.optionEvent.map((item, index) => {
-              if (this.formInline.event === item.id) {
-                this.wholeData.push(item)
-                this.cashHistory.type = item.typeId
-                this.cashHistory.assetsFind = item.name
-              }
-            })
-            this.cashHistory.operationType = 1
-            this.cashHistory.round = Math.abs(this.roundNum)
-            this.dialogVisible = true
-            console.log('this.cashHistory: ', this.cashHistory);
-          }
+          this.cashHistory.operationType = 1
+          this.cashHistory.round = Math.abs(this.roundNum)
+          this.dialogVisible = true
+          console.log('this.cashHistory: ', this.cashHistory);
           // addPlayerCash(this.cashHistory).then((res) => {
           //   console.log('现金购买变动: ', this.cashHistory);
           //   if (res.code === 1000) {
@@ -1202,79 +1070,66 @@ export default {
         }
       })
     },
-    // 知识产权购买
-    // handleAddIntel(formName) {
-    //   if (!this.formInline.intel) {
-    //     this.$message({
-    //       message: '请选择知识产权',
-    //       type: 'warning'
-    //     })
-    //     return
-    //   }
-    //   this.onSubmit(formName)
-    // },
     // 资产购买
     handleBuyAssets(formName) {
-      if (!this.formInline.assets) {
-        this.$message({
-          message: '请选择资产',
-          type: 'warning'
-        })
-        return
-      } else if ([21, 22, 23].includes(this.formInline.assets)) {
-        if (!this.formInline.noble) {
-          this.$message({
-            message: '请填写金额',
-            type: 'warning'
-          })
-          return
-        }
-      } else if (this.formInline.assets === 20) {
-        if (!this.formInline.dice) {
-          this.$message({
-            message: '请选择骰子数',
-            type: 'warning'
-          })
-          return
-        }
-      }
-      this.cashHistory = {}
-      if (this.playerInfos.length === 0) {
-        this.$message('请添加玩家')
-        return
-      }
+      // if (!this.formInline.assets) {
+      //   this.$message({
+      //     message: '请选择资产',
+      //     type: 'warning'
+      //   })
+      //   return
+      // } else if ([21, 22, 23].includes(this.formInline.assets)) {
+      //   if (!this.formInline.noble) {
+      //     this.$message({
+      //       message: '请填写金额',
+      //       type: 'warning'
+      //     })
+      //     return
+      //   }
+      // } else if (this.formInline.assets === 20) {
+      //   if (!this.formInline.dice) {
+      //     this.$message({
+      //       message: '请选择骰子数',
+      //       type: 'warning'
+      //     })
+      //     return
+      //   }
+      // }
+      // this.cashHistory = {}
+      // if (this.playerInfos.length === 0) {
+      //   this.$message('请添加玩家')
+      //   return
+      // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const data = deepClone(this.playerInfos)
-          data.forEach((item, index, arr) => {
-            item = ttassets(this.formInline, item, assetsData, this.roundNum, index)
-            return item
-          })
-          this.playerInfos = data
-          sessionData('set', 'playerInfos', this.playerInfos)
-          if (!this.iSprompt) {
-            this.optionEvent.map((item, index) => {
-              if (this.formInline.event === item.id) {
-                this.wholeData.push(item)
-                this.cashHistory.type = item.typeId
-                this.cashHistory.assetsFind = item.name
-              }
-            })
-            this.cashHistory.operationType = 1
-            this.cashHistory.round = Math.abs(this.roundNum)
-            if (this.formInline.assets) {
-              this.AssetsList.map((item, index) => {
-                if (this.formInline.assets === item.type) {
-                  this.cashHistory.cost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-                  this.cashHistory.realCost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-                  this.cashHistory.cash = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-                  this.cashHistory.assetsFind = item.gameType.name
-                  this.cashHistory.assetsFindHouse = [20].includes(this.formInline.assets) ? this.formInline.dice : ''
-                }
+          const playerRule = ruleAssets(this.formInline)
+          switch (playerRule) {
+            case 1:
+              this.$message('请')
+              break;
+            default:
+              const data = deepClone(this.playerInfos)
+              data.forEach((item, index) => {
+                item = ttassets(this.formInline, item, assetsData, this.roundNum, index)
+                return item
               })
-            }
-            this.dialogVisible = true
-            console.log('this.cashHistory: ', this.cashHistory);
+              this.playerInfos = data
+              sessionData('set', 'playerInfos', this.playerInfos)
+              this.cashHistory.operationType = 1
+              this.cashHistory.round = Math.abs(this.roundNum)
+              if (this.formInline.assets) {
+                this.AssetsList.map((item, index) => {
+                  if (this.formInline.assets === item.type) {
+                    this.cashHistory.cost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
+                    this.cashHistory.realCost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
+                    this.cashHistory.cash = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
+                    this.cashHistory.assetsFind = item.gameType.name
+                    this.cashHistory.assetsFindHouse = [20].includes(this.formInline.assets) ? this.formInline.dice : ''
+                  }
+                })
+              }
+              this.dialogVisible = true
+              console.log('this.cashHistory: ', this.cashHistory);
           }
           // addPlayerCash(this.cashHistory).then((res) => {
           //   console.log('现金购买变动: ', this.cashHistory);
@@ -1296,62 +1151,92 @@ export default {
     },
     // 技能使用
     handleUseRefuses(formName) {
-      if (!this.formInline.refuses) {
-        this.$message({
-          message: '请选择技能使用',
-          type: 'warning'
-        })
-        return
-      } else if (!Math.abs(this.formInline.refuses) === 11 && !this.formInline.moreplayer) {
-        this.$message({
-          message: '请输入多输入玩家',
-          type: 'warning'
-        })
-        return
-      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // this.optionEvent.forEach((item, index) => {
-          //   if (this.formInline.event === item.id) {
-          //     this.wholeData.push(item)
-          //   }
-          // })
-          // eventData.forEach((item, index) => {
-          //   if (this.formInline.affair === item.id) {
-          //     this.additionalData.push(item)
-          //   }
-          // })
-          this.playerInfos.map((item, index, arr) => {
-            if (Math.abs(this.formInline.refuses) === 5) {
-              if (index !== Math.abs(this.formInline.number) - 1 && index !== this.formInline.moreplayer[0] - 1) {
-                this.partmoney += NP.times(item.money, 0.1)
-              }
-            } else if (Math.abs(this.formInline.refuses) === 11) {
-              if (this.formInline.moreplayer.includes(index + 1)) {
-                this.sumCashFolw += item.cashFlow
-              } else if (index !== Math.abs(this.formInline.number) - 1 && !this.formInline.moreplayer) {
-                this.sumCashFolw += item.cashFlow
-              }
-            } else if ([13, 14].includes(Math.abs(this.formInline.refuses))) {
-              if (this.formInline.moreplayer.includes(index + 1)) {
-                this.userd = NP.times(item.money, 0.5)
-              }
-            }
-          })
-          this.poorindex = this.playerInfos.map(els => els.money).indexOf((Math.min.apply(Math, this.playerInfos.map((ele, index) => { return ele.money }))))
-          const data = deepClone(this.playerInfos)
-          data.map((item, index) => {
-            item = useskill(this.formInline, item, index, this.partmoney, this.roundNum, this.sumCashFolw, this.playerInfos.length, this.userd, this.poorindex)
-            return item
-          })
-          this.playerInfos = data
-          skillData.map(item => {
-            if (item.id === this.formInline.refuses) {
-              this.cashHistory.assetsFind = item.name
-            }
-          })
-          this.dialogVisible = true
-          sessionData('set', 'playerInfos', this.playerInfos)
+          const userEvent = skillEvent(this.formInline, this.playerInfos)
+          console.log('userEvent: ', userEvent);
+          switch (userEvent) {
+            case 1:
+              this.$message({
+                message: '请选择多输入玩家',
+                type: 'warning'
+              })
+              break;
+            case 2:
+              this.$message({
+                message: '多输入玩家不能包含自己',
+                type: 'warning'
+              })
+              break;
+            case 3:
+              this.$message({
+                message: '多输入玩家只能选择一位',
+                type: 'warning'
+              })
+              break;
+            case 4:
+              this.$message({
+                message: '请输入资产使用',
+                type: 'warning'
+              })
+              break;
+            case 5:
+              this.$message({
+                message: '输入资产超过原有的资产',
+                type: 'warning'
+              })
+              break;
+            case 6:
+              this.$message({
+                message: '选择数量',
+                type: 'warning'
+              })
+              break;
+            case 7:
+              this.$message({
+                message: '技能使用次数已用完',
+                type: 'warning'
+              })
+              break;
+            case 8:
+              this.$message({
+                message: '使用技能范围不正确',
+                type: 'warning'
+              })
+              break;
+            default:
+              this.playerInfos.map((item, index, arr) => {
+                if (Math.abs(this.formInline.refuses) === 5) {
+                  if (index !== Math.abs(this.formInline.number) - 1 && index !== this.formInline.moreplayer[0] - 1) {
+                    this.partmoney += NP.times(item.money, 0.1)
+                  }
+                } else if (Math.abs(this.formInline.refuses) === 11) {
+                  if (this.formInline.moreplayer.includes(index + 1)) {
+                    this.sumCashFolw += item.cashFlow
+                  } else if (index !== Math.abs(this.formInline.number) - 1 && !this.formInline.moreplayer) {
+                    this.sumCashFolw += item.cashFlow
+                  }
+                } else if ([13, 14].includes(Math.abs(this.formInline.refuses))) {
+                  if (this.formInline.moreplayer.includes(index + 1)) {
+                    this.userd = NP.times(item.money, 0.5)
+                  }
+                }
+              })
+              this.poorindex = this.playerInfos.map(els => els.money).indexOf((Math.min.apply(Math, this.playerInfos.map((ele, index) => { return ele.money }))))
+              const data = deepClone(this.playerInfos)
+              data.map((item, index) => {
+                item = useskill(this.formInline, item, index, this.partmoney, this.roundNum, this.sumCashFolw, this.playerInfos.length, this.userd, this.poorindex)
+                return item
+              })
+              this.playerInfos = data
+              skillData.map(item => {
+                if (item.id === this.formInline.refuses) {
+                  this.cashHistory.assetsFind = item.name
+                }
+              })
+              this.dialogVisible = true
+              sessionData('set', 'playerInfos', this.playerInfos)
+          }
           this.$refs[formName].resetFields()
         } else {
           return false
@@ -1404,37 +1289,10 @@ export default {
           })
           this.playerInfos = data
           sessionData('set', 'playerInfos', this.playerInfos)
-          console.log(this.iSprompt)
-          if (!this.iSprompt) {
-            this.optionEvent.map((item, index) => {
-              if (this.formInline.event === item.id) {
-                this.wholeData.push(item)
-                this.cashHistory.type = item.typeId
-                this.cashHistory.assetsFind = item.name
-              }
-            })
-            this.cashHistory.operationType = 1
-            this.cashHistory.round = Math.abs(this.roundNum)
-            // if (this.formInline.assets) {
-            //   this.AssetsList.map((item, index) => {
-            //     if (this.formInline.assets === item.type) {
-            //       this.cashHistory.cost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-            //       this.cashHistory.realCost = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-            //       this.cashHistory.cash = [21, 22, 23].includes(this.formInline.assets) ? this.formInline.noble : item.cost
-            //       this.cashHistory.assetsFind = item.gameType.name
-            //       this.cashHistory.assetsFindHouse = [20].includes(this.formInline.assets) ? this.formInline.dice : ''
-            //     }
-            //   })
-            // } else if (this.formInline.intel) {
-            //   this.IntelList.map((item, index) => {
-            //     if (this.formInline.intel === item.type) {
-            //       this.cashHistory.assetsFind = item.gameType.name
-            //     }
-            //   })
-            // }
-            this.dialogVisible = true
-            console.log('this.cashHistory: ', this.cashHistory);
-          }
+          this.cashHistory.operationType = 1
+          this.cashHistory.round = Math.abs(this.roundNum)
+          this.dialogVisible = true
+          console.log('this.cashHistory: ', this.cashHistory);
           // addPlayerCash(this.cashHistory).then((res) => {
           //   console.log('现金购买变动: ', this.cashHistory);
           //   if (res.code === 1000) {
@@ -1479,18 +1337,10 @@ export default {
           })
           this.playerInfos = data
           sessionData('set', 'playerInfos', this.playerInfos)
-          if (!this.iSprompt) {
-            this.optionEvent.map((item, index) => {
-              if (this.formInline.event === item.id) {
-                this.wholeData.push(item)
-                this.cashHistory.type = item.typeId
-              }
-            })
-            this.cashHistory.operationType = 2
-            this.cashHistory.round = this.roundNum
-            this.dialogVisible = true
-            console.log('this.cashFlowList: ', this.cashHistory)
-          }
+          this.cashHistory.operationType = 2
+          this.cashHistory.round = this.roundNum
+          this.dialogVisible = true
+          console.log('this.cashFlowList: ', this.cashHistory)
           this.$refs[formName].resetFields()
         } else {
           return false
@@ -1501,30 +1351,30 @@ export default {
     handleUpdateSkill(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const data = deepClone(this.playerInfos)
-          data.map((item, index) => {
-            if (this.formInline.number - 1 === index) {
-              if (item.skillList.length === 0) {
-                this.$message({
-                  message: '当前你没有学习技能',
-                  type: 'warning'
-                })
-              } else {
-                item.skillList.map((items) => {
-                  if (Math.abs(items.id) === Math.abs(this.formInline.refuses)) {
-                    item = updateskill(this.formInline, item, intelData, assetsData, this.roundNum)
-                  } else {
-                  }
-                })
-              }
-            }
-            return item
-          })
-          this.playerInfos = data
-          if (this.iSprompt) {
-            this.dialogVisible = true
+          const skillRuleNum = skillRule(this.formInline)
+          switch (skillRuleNum) {
+            case 1:
+              this.$message({
+                message: '请先选择骰子',
+                type: 'warning'
+              })
+              break;
+            default:
+              const data = deepClone(this.playerInfos)
+              data.map((item, index) => {
+                if (this.formInline.number - 1 === index) {
+                  item.skillList.map((items) => {
+                    if (Math.abs(items.id) === Math.abs(this.formInline.refuses)) {
+                      item = updateskill(this.formInline, item, intelData, assetsData, this.roundNum)
+                    }
+                  })
+                }
+                return item
+              })
+              this.playerInfos = data
+              this.dialogVisible = true
+              sessionData('set', 'playerInfos', this.playerInfos)
           }
-          sessionData('set', 'playerInfos', this.playerInfos)
           this.$refs[formName].resetFields()
         } else {
           return false
@@ -1544,12 +1394,6 @@ export default {
             }
           })
           this.playerInfos = data
-          this.optionEvent.map((item, index) => {
-            if (this.formInline.event === item.id) {
-              this.wholeData.push(item)
-              this.cashHistory.type = item.typeId
-            }
-          })
           this.cashHistory.operationType = 1
           this.cashHistory.round = Math.abs(this.roundNum)
           if (this.formInline.ofthe) {
@@ -1560,6 +1404,7 @@ export default {
             })
           }
           this.dialogVisible = true
+          console.log('this.cashHistory: ', this.cashHistory);
           sessionData('set', 'playerInfos', this.playerInfos)
           this.$refs[formName].resetFields()
         } else {

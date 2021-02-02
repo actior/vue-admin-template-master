@@ -32,6 +32,18 @@
               <el-button type="text" slot="reference">商业资产</el-button>
             </el-popover>
           </div>
+          <div class="text item">
+            <el-popover placement="right" width="400" trigger="click">
+              <el-card class="box-card">
+                <div
+                  v-for="(item,index) in list.inteArray"
+                  :key="'intel'+index"
+                  class="text item"
+                >{{setIntel(item.type)}}&nbsp;{{item.intelnumber}}份</div>
+              </el-card>
+              <el-button type="text" slot="reference">专利</el-button>
+            </el-popover>
+          </div>
           <div class="text item">技能数：{{ list.skill || 0 }}</div>
           <div class="text item">负债：-{{ list.carExpenses || 0 }}</div>
           <div class="text item">欠债：{{ list.borrower || 0 }}</div>
@@ -60,7 +72,7 @@
               class="styleSettle"
               :disabled="list.disabled"
             >结算当前用户</el-button>
-            <el-dropdown placement="bottom-start">
+            <el-dropdown placement="bottom-start" trigger="click">
               <span class="el-dropdown-link">
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
@@ -72,18 +84,6 @@
           <div class="text item">玩家编号：{{ id + 1 }}</div>
           <div class="text item">大学研发中心：{{ list.developed || 0 }}</div>
           <div class="text item">银行信贷信用卡：{{ list.credit*(list.creditRound/10) || 0 }}</div>
-          <div class="text item">
-            <el-popover placement="right" width="400" trigger="click">
-              <el-card class="box-card">
-                <div
-                  v-for="(item,index) in list.inteArray"
-                  :key="'intel'+index"
-                  class="text item"
-                >{{setIntel(item.type)}}&nbsp;{{item.intelnumber}}份</div>
-              </el-card>
-              <el-button type="text" slot="reference">专利</el-button>
-            </el-popover>
-          </div>
           <div class="text item">
             技能：
             <div
